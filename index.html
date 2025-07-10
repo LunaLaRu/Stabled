@@ -3,172 +3,378 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stabled: Barn Management</title>
+  <title>Stabled - Barn Management</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #FDFBF6;
-    }
-    .nav-link {
-      transition: background-color 0.2s ease-in-out;
-      cursor: pointer;
-    }
-    .nav-link.active {
-      background-color: #A0522D;
-      color: white;
-      font-weight: 600;
-    }
-    .nav-link:not(.active):hover {
-      background-color: #F5DEB3;
-    }
-    .content-section {
-      display: none;
-    }
-    .content-section.active {
-      display: block;
-    }
+    body { font-family: 'Inter', sans-serif; background: #FDFBF6; }
+    .hidden { display: none; }
+    ul { padding-left: 1.25rem; }
   </style>
 </head>
-<body>
-  <div class="flex h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-[#FFF8E1] p-6 flex flex-col fixed h-full shadow-lg">
-      <div class="flex items-center mb-10">
-        <div class="p-2 bg-[#D2691E] rounded-full mr-3">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" 
-            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-          </svg>
-        </div>
-        <h1 class="text-xl font-bold text-[#8B4513]">Stabled</h1>
+<body class="min-h-screen flex flex-col items-center p-6">
+
+  <!-- SPLASH PAGE -->
+  <section id="splash" class="max-w-4xl w-full p-8 bg-white rounded-lg shadow-md space-y-6">
+    <h1 class="text-4xl font-bold text-[#8B4513]">Welcome to Stabled</h1>
+    <p class="text-gray-700 text-lg">
+      Stabled is your all-in-one barn management solution designed for barn owners to streamline horse care, client communication, staff management, and billing.
+    </p>
+
+    <h2 class="text-2xl font-semibold text-[#D2691E]">Choose Your Plan</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="border rounded p-4 shadow-sm text-center">
+        <h3 class="text-xl font-semibold">🌟 30-Day Free Trial</h3>
+        <p class="mt-2 text-gray-600">Try all features free for 30 days.</p>
+        <p class="mt-4 font-bold text-[#2E8B57]">No credit card required</p>
       </div>
-      <nav class="flex flex-col space-y-2">
-        <a class="nav-link active p-3 rounded-lg flex items-center" data-target="dashboard">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" 
-            viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
-            stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 
-            01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 
-            01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 
-            01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 
-            01-2-2v-2z"></path></svg>
-          Dashboard
-        </a>
-        <a class="nav-link p-3 rounded-lg flex items-center" data-target="client">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" 
-            viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
-            stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 
-            00-7 7h14a7 7 0 00-7-7z"></path></svg>
-          Client Welcome
-        </a>
-        <a class="nav-link p-3 rounded-lg flex items-center" data-target="staff">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" 
-            viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
-            stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 
-            0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 
-            20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 
-            3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 
-            11-4 0 2 2 0 014 0z"></path></svg>
-          Staff Welcome
-        </a>
-        <a class="nav-link p-3 rounded-lg flex items-center" data-target="overview">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" 
-            viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" 
-            stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 
-            0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 
-            01-2 2z"></path></svg>
-          App Overview
-        </a>
-      </nav>
-      <div class="mt-auto p-4 bg-[#F5DEB3] rounded-lg text-center text-[#8B4513] text-sm">
-        Stabled: Your all-in-one barn management solution.
+      <div class="border rounded p-4 shadow-sm text-center border-[#A0522D]">
+        <h3 class="text-xl font-semibold">🐎 Mustang Plan</h3>
+        <p class="mt-2 text-gray-600">Basic features including horse & client management, limited users, and monthly billing.</p>
+        <p class="mt-4 font-bold">$29/month</p>
       </div>
-    </aside>
+      <div class="border rounded p-4 shadow-sm text-center border-[#8B4513]">
+        <h3 class="text-xl font-semibold">🐴 Stallion Plan</h3>
+        <p class="mt-2 text-gray-600">Unlimited users, full features including staff management and priority support.</p>
+        <p class="mt-4 font-bold">$59/month</p>
+      </div>
+    </div>
 
-    <!-- Main content -->
-    <main class="flex-1 p-8 ml-64 overflow-auto">
-      <section id="dashboard" class="content-section active">
-        <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👑 Welcome, Barn Owner!</h2>
-        <p class="text-gray-700 mb-8">This is your simplified dashboard. Navigate with the sidebar.</p>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-          <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Barn Overview</h3>
-          <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
-            <li>Total Horses: 25</li>
-            <li>Active Clients: 18</li>
-            <li>Upcoming Bookings: 12</li>
-          </ul>
-        </div>
-      </section>
+    <div class="mt-6 flex space-x-4">
+      <button id="btnNewUser" class="flex-1 py-3 bg-[#D2691E] text-white rounded hover:bg-[#A0522D]">New User Sign Up</button>
+      <button id="btnExistingUser" class="flex-1 py-3 border border-[#D2691E] text-[#D2691E] rounded hover:bg-[#F5DEB3]">Existing User Log In</button>
+    </div>
+  </section>
 
-      <section id="client" class="content-section">
-        <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👋 Welcome, Client!</h2>
-        <p class="text-gray-700 mb-8">This is your personalized client portal.</p>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-          <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Horse Info</h3>
-          <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
-            <li>Horse: Starlight (Arabian)</li>
-            <li>Next Lesson: July 15, 2025</li>
-            <li>Outstanding Invoice: $850</li>
-          </ul>
-        </div>
-      </section>
+  <!-- AUTH SECTION -->
+  <section id="authSection" class="hidden max-w-md w-full p-8 bg-white rounded-lg shadow-md space-y-6">
+    <h2 id="authTitle" class="text-2xl font-bold text-[#8B4513]"></h2>
 
-      <section id="staff" class="content-section">
-        <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👷 Welcome, Staff Member!</h2>
-        <p class="text-gray-700 mb-8">This is your staff portal.</p>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-          <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Daily Tasks</h3>
-          <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
-            <li>AM Feed: Pending</li>
-            <li>Stall Cleaning (Starlight): Completed</li>
-            <li>Medication (Thunder): Pending</li>
-          </ul>
-        </div>
-      </section>
+    <!-- Signup Form -->
+    <form id="signupForm" class="space-y-4 hidden">
+      <label class="block">
+        Email
+        <input type="email" id="signupEmail" required class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label class="block">
+        Password
+        <input type="password" id="signupPassword" required class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label class="block">
+        Select Plan
+        <select id="signupPlan" required class="w-full border rounded px-3 py-2 mt-1">
+          <option value="free">30-Day Free Trial</option>
+          <option value="mustang">Mustang Plan</option>
+          <option value="stallion">Stallion Plan</option>
+        </select>
+      </label>
+      <button type="submit" class="w-full bg-[#2E8B57] text-white py-3 rounded hover:bg-[#228B22]">Create Account</button>
+      <p class="mt-2 text-sm text-center">
+        Already have an account? <button type="button" id="showLoginFromSignup" class="text-[#D2691E] underline">Log In</button>
+      </p>
+    </form>
 
-      <section id="overview" class="content-section">
-        <h2 class="text-3xl font-bold text-[#8B4513] mb-4">Stabled: Application Overview</h2>
-        <p class="text-gray-500 mb-8">Discover how Stabled streamlines your barn management.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#D2691E]">
-            <h3 class="text-lg font-semibold text-gray-700">Centralized Data</h3>
-            <p class="text-gray-500 text-sm mt-1">Manage all horse, client, and operational data in one place.</p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#2E8B57]">
-            <h3 class="text-lg font-semibold text-gray-700">Boost Efficiency</h3>
-            <p class="text-gray-500 text-sm mt-1">Streamline daily tasks and reduce administrative burden.</p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#4682B4]">
-            <h3 class="text-lg font-semibold text-gray-700">Secure Access</h3>
-            <p class="text-gray-500 text-sm mt-1">Tailored views and permissions for barn owners, staff, and clients.</p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#DAA520]">
-            <h3 class="text-lg font-semibold text-gray-700">Access Anywhere</h3>
-            <p class="text-gray-500 text-sm mt-1">Fully responsive design for seamless use on any device.</p>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+    <!-- Login Form -->
+    <form id="loginForm" class="space-y-4 hidden">
+      <label class="block">
+        Email
+        <input type="email" id="loginEmail" required class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label class="block">
+        Password
+        <input type="password" id="loginPassword" required class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label class="inline-flex items-center space-x-2">
+        <input type="checkbox" id="rememberMe" />
+        <span>Remember me</span>
+      </label>
+      <button type="submit" class="w-full bg-[#D2691E] text-white py-3 rounded hover:bg-[#A0522D]">Log In</button>
+      <p class="mt-2 text-sm text-center">
+        Forgot your password? <button type="button" id="forgotPasswordBtn" class="text-[#2E8B57] underline">Reset here</button>
+      </p>
+      <p class="mt-2 text-sm text-center">
+        New user? <button type="button" id="showSignupFromLogin" class="text-[#2E8B57] underline">Create account</button>
+      </p>
+    </form>
 
-  <script>
-    // Simple tab switching logic
-    const navLinks = document.querySelectorAll('.nav-link');
-    const contentSections = document.querySelectorAll('.content-section');
+    <!-- Forgot Password Form -->
+    <form id="forgotPasswordForm" class="space-y-4 hidden">
+      <label class="block">
+        Enter your email to reset password
+        <input type="email" id="forgotEmail" required class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <button type="submit" class="w-full bg-[#D2691E] text-white py-3 rounded hover:bg-[#A0522D]">Send Reset Email</button>
+      <p class="mt-2 text-sm text-center">
+        Remembered? <button type="button" id="backToLoginBtn" class="text-[#2E8B57] underline">Back to Log In</button>
+      </p>
+    </form>
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        // Remove active from all nav links and sections
-        navLinks.forEach(l => l.classList.remove('active'));
-        contentSections.forEach(s => s.classList.remove('active'));
+    <button id="backToSplash" class="mt-4 w-full text-center text-[#D2691E] underline">Back to Splash</button>
+  </section>
 
-        // Add active to clicked nav and corresponding section
-        link.classList.add('active');
-        const targetId = link.getAttribute('data-target');
-        document.getElementById(targetId).classList.add('active');
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="hidden max-w-5xl w-full p-8 bg-white rounded-lg shadow-md space-y-6">
+    <h2 class="text-3xl font-bold text-[#8B4513]">Dashboard</h2>
+    <p>Welcome, <span id="userEmailDisplay"></span>!</p>
+    <p>Your current plan: <strong><span id="userPlanDisplay"></span></strong></p>
+
+    <h3 class="text-xl font-semibold text-[#D2691E]">Your Features:</h3>
+    <ul id="planFeatures" class="list-disc list-inside text-gray-700"></ul>
+
+    <h3 class="text-xl font-semibold text-[#D2691E]">Billing & Payment</h3>
+    <form id="paymentForm" class="space-y-4 max-w-md">
+      <label>
+        Credit Card Number
+        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label>
+        Expiry Date
+        <input type="text" id="expiryDate" placeholder="MM/YY" class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <label>
+        CVC
+        <input type="text" id="cvc" placeholder="123" class="w-full border rounded px-3 py-2 mt-1" />
+      </label>
+      <button type="submit" class="w-full bg-[#2E8B57] text-white py-3 rounded hover:bg-[#228B22]">Update Payment Info</button>
+    </form>
+
+    <div class="flex flex-wrap gap-4 mt-6">
+      <button id="btnUpgrade" class="flex-1 min-w-[120px] py-3 bg-[#D2691E] text-white rounded hover:bg-[#A0522D]">Upgrade Plan</button>
+      <button id="btnDowngrade" class="flex-1 min-w-[120px] py-3 border border-[#D2691E] text-[#D2691E] rounded hover:bg-[#F5DEB3]">Downgrade Plan</button>
+      <button id="btnCancel" class="flex-1 min-w-[120px] py-3 bg-red-600 text-white rounded hover:bg-red-700">Cancel Subscription</button>
+      <button id="btnLogout" class="flex-1 min-w-[120px] py-3 bg-gray-600 text-white rounded hover:bg-gray-700">Log Out</button>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      onAuthStateChanged,
+      signOut,
+      setPersistence,
+      browserLocalPersistence,
+      browserSessionPersistence,
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      updateDoc,
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // TODO: REPLACE WITH YOUR FIREBASE CONFIG
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // UI refs
+    const splash = document.getElementById("splash");
+    const authSection = document.getElementById("authSection");
+    const dashboard = document.getElementById("dashboard");
+
+    const signupForm = document.getElementById("signupForm");
+    const loginForm = document.getElementById("loginForm");
+    const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+    const authTitle = document.getElementById("authTitle");
+
+    const btnNewUser = document.getElementById("btnNewUser");
+    const btnExistingUser = document.getElementById("btnExistingUser");
+    const showLoginFromSignup = document.getElementById("showLoginFromSignup");
+    const showSignupFromLogin = document.getElementById("showSignupFromLogin");
+    const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+    const backToLoginBtn = document.getElementById("backToLoginBtn");
+    const backToSplash = document.getElementById("backToSplash");
+
+    const userEmailDisplay = document.getElementById("userEmailDisplay");
+    const userPlanDisplay = document.getElementById("userPlanDisplay");
+    const planFeatures = document.getElementById("planFeatures");
+    const paymentForm = document.getElementById("paymentForm");
+
+    const btnUpgrade = document.getElementById("btnUpgrade");
+    const btnDowngrade = document.getElementById("btnDowngrade");
+    const btnCancel = document.getElementById("btnCancel");
+    const btnLogout = document.getElementById("btnLogout");
+
+    let currentUser = null;
+    let currentUserData = null;
+
+    const featuresByPlan = {
+      free: ["Full feature trial for 30 days", "Limited support"],
+      mustang: [
+        "Manage up to 10 horses",
+        "Up to 5 active clients",
+        "Basic reporting & notifications",
+        "Email support",
+      ],
+      stallion: [
+        "Unlimited horses & clients",
+        "Full reporting & analytics",
+        "Staff management",
+        "Priority support",
+        "Billing & payment automation",
+      ],
+    };
+
+    // Show views
+    function showSplash() {
+      splash.classList.remove("hidden");
+      authSection.classList.add("hidden");
+      dashboard.classList.add("hidden");
+    }
+
+    function showAuth(formToShow) {
+      splash.classList.add("hidden");
+      authSection.classList.remove("hidden");
+      dashboard.classList.add("hidden");
+      signupForm.classList.add("hidden");
+      loginForm.classList.add("hidden");
+      forgotPasswordForm.classList.add("hidden");
+
+      if (formToShow === "signup") {
+        authTitle.textContent = "Create a New Account";
+        signupForm.classList.remove("hidden");
+      } else if (formToShow === "login") {
+        authTitle.textContent = "Log In to Your Account";
+        loginForm.classList.remove("hidden");
+      } else if (formToShow === "forgot") {
+        authTitle.textContent = "Reset Your Password";
+        forgotPasswordForm.classList.remove("hidden");
+      }
+    }
+
+    function showDashboard() {
+      splash.classList.add("hidden");
+      authSection.classList.add("hidden");
+      dashboard.classList.remove("hidden");
+    }
+
+    // Populate dashboard data
+    function populateDashboard() {
+      if (!currentUserData) return;
+      userEmailDisplay.textContent = currentUser.email;
+      const plan = currentUserData.plan || "free";
+      userPlanDisplay.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+
+      planFeatures.innerHTML = "";
+      featuresByPlan[plan].forEach((feature) => {
+        const li = document.createElement("li");
+        li.textContent = feature;
+        planFeatures.appendChild(li);
       });
+    }
+
+    // Load user data from Firestore
+    async function loadUserDataAndShowDashboard() {
+      if (!currentUser) return;
+      const docRef = doc(db, "users", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        currentUserData = docSnap.data();
+      } else {
+        // If no data, create default with free plan
+        await setDoc(docRef, { email: currentUser.email, plan: "free", createdAt: new Date() });
+        currentUserData = { plan: "free" };
+      }
+      populateDashboard();
+      showDashboard();
+    }
+
+    // Authentication state listener
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        loadUserDataAndShowDashboard();
+      } else {
+        currentUser = null;
+        currentUserData = null;
+        showSplash();
+      }
     });
-  </script>
-</body>
-</html>
+
+    // Event listeners for splash page buttons
+    btnNewUser.addEventListener("click", () => showAuth("signup"));
+    btnExistingUser.addEventListener("click", () => showAuth("login"));
+
+    // Toggle between signup/login forms
+    showLoginFromSignup.addEventListener("click", () => showAuth("login"));
+    showSignupFromLogin.addEventListener("click", () => showAuth("signup"));
+
+    // Forgot password flow
+    forgotPasswordBtn.addEventListener("click", () => showAuth("forgot"));
+    backToLoginBtn.addEventListener("click", () => showAuth("login"));
+
+    backToSplash.addEventListener("click", () => showSplash());
+
+    // Signup form submission
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const plan = document.getElementById("signupPlan").value;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        currentUser = userCredential.user;
+
+        await setDoc(doc(db, "users", currentUser.uid), {
+          email,
+          plan,
+          createdAt: new Date(),
+          trialStart: plan === "free" ? new Date() : null,
+          paymentInfo: null,
+        });
+
+        alert("Account created! Welcome to Stabled.");
+        loadUserDataAndShowDashboard();
+      } catch (error) {
+        alert("Error creating account: " + error.message);
+      }
+    });
+
+    // Login form submission with "remember me"
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const remember = document.getElementById("rememberMe").checked;
+
+      try {
+        await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        currentUser = userCredential.user;
+        loadUserDataAndShowDashboard();
+      } catch (error) {
+        alert("Login failed: " + error.message);
+      }
+    });
+
+    // Forgot password form submission
+    forgotPasswordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("forgotEmail").value.trim();
+      try {
+        await sendPasswordResetEmail(auth, email);
+        alert("Password reset email sent. Check your inbox.");
+        showAuth("login");
+      } catch (error) {
+        alert("Failed to send reset email: " + error.message);
+      }
+    });
+
+    // Payment form submission (simulated)
+    paymentForm.addEventListener("submit", async (e
+
