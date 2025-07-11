@@ -3,303 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stabled - Barn Management Prototype</title>
+  <title>Stabled: Login / Signup</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background-color: #FDFBF6;
     }
-    .hidden { display: none; }
-    .nav-link {
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-    }
-    .nav-link:hover {
-      background-color: #F5DEB3;
-    }
-    .nav-link.active {
-      background-color: #A0522D;
-      color: white;
-      font-weight: 600;
+    #barnNameField {
+      display: none;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="flex items-center justify-center min-h-screen p-4">
 
-  <!-- Splash Page -->
-  <section id="splashPage" class="max-w-4xl mx-auto p-8">
-    <h1 class="text-4xl font-bold text-[#8B4513] mb-6">Welcome to Stabled</h1>
-    <p class="mb-6 text-gray-700 text-lg">
-      Manage your barn with ease. Track horses, clients, staff, and streamline your barn operations.
-    </p>
+  <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold text-[#8B4513] mb-6 text-center">Welcome to Stabled</h2>
 
-    <h2 class="text-2xl font-semibold text-[#D2691E] mb-4">Pricing Tiers</h2>
-    <ul class="mb-8 space-y-4">
-      <li>
-        <strong>🏇 Mustang Tier</strong> — $19/month, limited features: Manage up to 10 horses, basic client & staff management.
-      </li>
-      <li>
-        <strong>🏆 Thoroughbred Tier</strong> — $49/month, unlimited features: Full access, unlimited horses, advanced reporting, priority support.
-      </li>
-    </ul>
-    <p class="mb-6 text-gray-600 italic">Start with a 30-day free trial. Cancel or change your plan anytime.</p>
-
-    <div class="flex space-x-6">
-      <button id="goToSignupBtn" class="bg-[#2E8B57] text-white py-3 px-6 rounded-lg hover:bg-[#228B22]">New User Signup</button>
-      <button id="goToLoginBtn" class="bg-[#D2691E] text-white py-3 px-6 rounded-lg hover:bg-[#A0522D]">Existing User Login</button>
+    <!-- Login Form -->
+    <div class="mb-8">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Login</h3>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="loginEmail" required
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" />
+        </div>
+        <div>
+          <label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="loginPassword" required
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" />
+        </div>
+        <button type="submit"
+          class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#D2691E] hover:bg-[#A0522D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D2691E]">
+          Login
+        </button>
+      </form>
     </div>
-  </section>
 
-  <!-- Signup Form -->
-  <section id="signupPage" class="hidden max-w-md mx-auto p-8">
-    <h2 class="text-3xl font-bold text-[#8B4513] mb-6">Create Your Account</h2>
-    <form id="signupForm" class="space-y-4">
-      <label class="block">
-        Email:
-        <input type="email" id="signupEmail" required class="w-full border rounded px-3 py-2 mt-1" />
-      </label>
-      <label class="block">
-        Password:
-        <input type="password" id="signupPassword" required class="w-full border rounded px-3 py-2 mt-1" />
-      </label>
-      <label class="block">
-        Choose your plan:
-        <select id="signupPlan" required class="w-full border rounded px-3 py-2 mt-1">
-          <option value="">Select a tier</option>
-          <option value="mustang">Mustang Tier - $19/mo</option>
-          <option value="thoroughbred">Thoroughbred Tier - $49/mo</option>
-        </select>
-      </label>
-      <button type="submit" class="bg-[#2E8B57] text-white w-full py-3 rounded hover:bg-[#228B22]">Sign Up & Start Free Trial</button>
-    </form>
-    <p class="mt-4 text-center text-gray-600">
-      Already have an account? <span id="backToLoginFromSignup" class="text-[#D2691E] cursor-pointer underline">Log in here</span>.
-    </p>
-    <p class="mt-2 text-center text-gray-500 text-sm">*This is a prototype, no real account is created.</p>
-  </section>
-
-  <!-- Login Form -->
-  <section id="loginPage" class="hidden max-w-md mx-auto p-8">
-    <h2 class="text-3xl font-bold text-[#8B4513] mb-6">User Login</h2>
-    <form id="loginForm" class="space-y-4">
-      <label class="block">
-        Email:
-        <input type="email" id="loginEmail" required class="w-full border rounded px-3 py-2 mt-1" />
-      </label>
-      <label class="block">
-        Password:
-        <input type="password" id="loginPassword" required class="w-full border rounded px-3 py-2 mt-1" />
-      </label>
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" id="rememberMe" />
-        <span>Remember Me</span>
-      </label>
-      <button type="submit" class="bg-[#D2691E] text-white w-full py-3 rounded hover:bg-[#A0522D]">Login</button>
-    </form>
-    <p class="mt-4 text-center">
-      <span id="goToForgotPassword" class="text-[#2E8B57] cursor-pointer underline">Forgot Password?</span>
-    </p>
-    <p class="mt-4 text-center text-gray-600">
-      New user? <span id="backToSignupFromLogin" class="text-[#2E8B57] cursor-pointer underline">Create an account</span>.
-    </p>
-    <p class="mt-2 text-center text-gray-500 text-sm">*This is a prototype, no real login.</p>
-  </section>
-
-  <!-- Forgot Password Form -->
-  <section id="forgotPasswordPage" class="hidden max-w-md mx-auto p-8">
-    <h2 class="text-3xl font-bold text-[#8B4513] mb-6">Reset Password</h2>
-    <form id="forgotPasswordForm" class="space-y-4">
-      <label class="block">
-        Enter your email:
-        <input type="email" id="forgotPasswordEmail" required class="w-full border rounded px-3 py-2 mt-1" />
-      </label>
-      <button type="submit" class="bg-[#4682B4] text-white w-full py-3 rounded hover:bg-[#4169E1]">Send Reset Link</button>
-    </form>
-    <p class="mt-4 text-center">
-      <span id="backToLoginFromForgot" class="text-[#D2691E] cursor-pointer underline">Back to Login</span>
-    </p>
-    <p class="mt-2 text-center text-gray-500 text-sm">*This is a prototype, no real emails sent.</p>
-  </section>
-
-  <!-- Dashboard -->
-  <section id="dashboardPage" class="hidden max-w-4xl mx-auto p-8">
-    <div class="flex justify-between items-center mb-6">
-      <h2 class="text-4xl font-bold text-[#8B4513]">Dashboard</h2>
-      <button id="logoutBtn" class="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Logout</button>
+    <!-- Signup Form -->
+    <div>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Sign Up</h3>
+      <form id="signupForm" class="space-y-4">
+        <div>
+          <label for="signupEmail" class="block text-sm font-medium text-gray-700">Email</label>
+          <input type="email" id="signupEmail" required
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" />
+        </div>
+        <div>
+          <label for="signupPassword" class="block text-sm font-medium text-gray-700">Password</label>
+          <input type="password" id="signupPassword" required
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" />
+        </div>
+        <div>
+          <label for="signupRole" class="block text-sm font-medium text-gray-700">I am a...</label>
+          <select id="signupRole" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2">
+            <option value="barn_owner">Barn Owner</option>
+            <option value="client">Client</option>
+            <option value="staff">Staff</option>
+          </select>
+        </div>
+        <div id="barnNameField">
+          <label for="signupBarnName" class="block text-sm font-medium text-gray-700">Barn Name (for owners)</label>
+          <input type="text" id="signupBarnName"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" />
+        </div>
+        <button type="submit"
+          class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#2E8B57] hover:bg-[#228B22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E8B57]">
+          Sign Up
+        </button>
+      </form>
     </div>
-    <p id="welcomeMessage" class="mb-6 text-lg text-gray-700"></p>
-
-    <div id="tierFeatures" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Features will be injected here -->
-    </div>
-  </section>
+  </div>
 
   <script>
-    // Elements
-    const splashPage = document.getElementById('splashPage');
-    const signupPage = document.getElementById('signupPage');
-    const loginPage = document.getElementById('loginPage');
-    const forgotPasswordPage = document.getElementById('forgotPasswordPage');
-    const dashboardPage = document.getElementById('dashboardPage');
+    // Show barn name field only if barn_owner is selected
+    const signupRoleSelect = document.getElementById('signupRole');
+    const barnNameField = document.getElementById('barnNameField');
+    const signupBarnNameInput = document.getElementById('signupBarnName');
 
-    // Buttons and links
-    const goToSignupBtn = document.getElementById('goToSignupBtn');
-    const goToLoginBtn = document.getElementById('goToLoginBtn');
-    const backToLoginFromSignup = document.getElementById('backToLoginFromSignup');
-    const backToSignupFromLogin = document.getElementById('backToSignupFromLogin');
-    const goToForgotPassword = document.getElementById('goToForgotPassword');
-    const backToLoginFromForgot = document.getElementById('backToLoginFromForgot');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    const signupForm = document.getElementById('signupForm');
-    const loginForm = document.getElementById('loginForm');
-    const forgotPasswordForm = document.getElementById('forgotPasswordForm');
-
-    const welcomeMessage = document.getElementById('welcomeMessage');
-    const tierFeatures = document.getElementById('tierFeatures');
-
-    // State
-    let currentUser = null;
-
-    // Tier feature data
-    const tierData = {
-      mustang: {
-        name: 'Mustang Tier',
-        price: '$19/month',
-        features: [
-          'Manage up to 10 horses',
-          'Basic client & staff management',
-          'Limited reports',
-          'Email support'
-        ],
-      },
-      thoroughbred: {
-        name: 'Thoroughbred Tier',
-        price: '$49/month',
-        features: [
-          'Unlimited horses',
-          'Advanced client & staff management',
-          'Detailed reports & analytics',
-          'Priority support',
-          'Billing and subscription management'
-        ],
+    signupRoleSelect.addEventListener('change', () => {
+      if (signupRoleSelect.value === 'barn_owner') {
+        barnNameField.style.display = 'block';
+        signupBarnNameInput.setAttribute('required', 'required');
+      } else {
+        barnNameField.style.display = 'none';
+        signupBarnNameInput.removeAttribute('required');
       }
-    };
-
-    // Helper to show/hide pages
-    function showPage(page) {
-      [splashPage, signupPage, loginPage, forgotPasswordPage, dashboardPage].forEach(p => {
-        p.classList.add('hidden');
-      });
-      page.classList.remove('hidden');
-    }
-
-    // Show splash on load
-    showPage(splashPage);
-
-    // Navigation handlers
-    goToSignupBtn.onclick = () => showPage(signupPage);
-    goToLoginBtn.onclick = () => showPage(loginPage);
-    backToLoginFromSignup.onclick = () => showPage(loginPage);
-    backToSignupFromLogin.onclick = () => showPage(signupPage);
-    goToForgotPassword.onclick = () => showPage(forgotPasswordPage);
-    backToLoginFromForgot.onclick = () => showPage(loginPage);
-
-    // Signup form submit (mock)
-    signupForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('signupEmail').value.trim();
-      const password = document.getElementById('signupPassword').value.trim();
-      const plan = document.getElementById('signupPlan').value;
-
-      if (!email || !password || !plan) {
-        alert('Please fill out all fields and select a plan.');
-        return;
-      }
-
-      currentUser = { email, plan };
-      alert(`Account created for ${email} with ${tierData[plan].name}. Starting 30-day free trial.`);
-      loadDashboard();
     });
 
-    // Login form submit (mock)
-    loginForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const remember = document.getElementById('rememberMe').checked;
+    // Initialize barn name field visibility on load
+    if (signupRoleSelect.value === 'barn_owner') {
+      barnNameField.style.display = 'block';
+      signupBarnNameInput.setAttribute('required', 'required');
+    }
 
-      if (!email || !password) {
-        alert('Please enter email and password.');
+    // Dummy users database stored in localStorage (simple demo)
+    const USERS_KEY = 'stabledUsers';
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY)) || {};
+    }
+
+    function saveUser(user) {
+      const users = getUsers();
+      users[user.email] = user;
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+    // Login handler
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.toLowerCase();
+      const password = document.getElementById('loginPassword').value;
+      const users = getUsers();
+
+      if (users[email] && users[email].password === password) {
+        // Save current user info in localStorage for dashboard
+        localStorage.setItem('currentUser', JSON.stringify(users[email]));
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Invalid email or password.');
+      }
+    });
+
+    // Signup handler
+    document.getElementById('signupForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signupEmail').value.toLowerCase();
+      const password = document.getElementById('signupPassword').value;
+      const role = signupRoleSelect.value;
+      const barnName = signupBarnNameInput.value.trim();
+
+      const users = getUsers();
+      if (users[email]) {
+        alert('Email already registered. Please log in.');
         return;
       }
 
-      // For prototype, accept any login
-      currentUser = {
+      const newUser = {
         email,
-        plan: Math.random() > 0.5 ? 'mustang' : 'thoroughbred' // randomly assign tier
+        password,
+        role,
+        barnName: role === 'barn_owner' ? barnName || `${email.split('@')[0]}'s Barn` : null,
       };
-
-      if (remember) {
-        localStorage.setItem('stabledUser', JSON.stringify(currentUser));
-      }
-
-      loadDashboard();
+      saveUser(newUser);
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+      alert('Account created! Redirecting to dashboard...');
+      window.location.href = 'dashboard.html';
     });
-
-    // Forgot password form submit (mock)
-    forgotPasswordForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('forgotPasswordEmail').value.trim();
-
-      if (!email) {
-        alert('Please enter your email.');
-        return;
-      }
-
-      alert(`If an account with ${email} exists, a reset link has been sent (mock).`);
-      showPage(loginPage);
-    });
-
-    // Logout
-    logoutBtn.onclick = () => {
-      currentUser = null;
-      localStorage.removeItem('stabledUser');
-      showPage(splashPage);
-    };
-
-    // Load dashboard with user data
-    function loadDashboard() {
-      if (!currentUser) {
-        alert('Not logged in');
-        return;
-      }
-
-      showPage(dashboardPage);
-      welcomeMessage.textContent = `Welcome, ${currentUser.email}! You are on the ${tierData[currentUser.plan].name} plan.`;
-
-      // Clear previous features
-      tierFeatures.innerHTML = '';
-      tierData[currentUser.plan].features.forEach(f => {
-        const div = document.createElement('div');
-        div.className = 'bg-white p-4 rounded shadow border-l-4 border-[#D2691E]';
-        div.textContent = f;
-        tierFeatures.appendChild(div);
-      });
-    }
-
-    // Auto-login if saved in localStorage
-    window.onload = () => {
-      const savedUser = localStorage.getItem('stabledUser');
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        loadDashboard();
-      }
-    };
   </script>
-
 </body>
 </html>
