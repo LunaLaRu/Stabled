@@ -1,135 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stabled: Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #FDFBF6;
-    }
-    .nav-link {
-      transition: all 0.2s ease-in-out;
-    }
-    .nav-link.active {
-      background-color: #A0522D;
-      color: #FFFFFF;
-      font-weight: 600;
-    }
-    .nav-link:not(.active):hover {
-      background-color: #F5DEB3;
-    }
-    .content-section {
-      display: none;
-    }
-    .content-section.active {
-      display: block;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stabled: Bare Bones Barn Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-link.active {
+            background-color: #A0522D;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+        .nav-link:not(.active):hover {
+            background-color: #F5DEB3;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
 
-    /* Mobile specific styles */
-    .sidebar {
-      transform: translateX(-100%);
-      transition: transform 0.3s ease-in-out;
-      z-index: 1000;
-    }
-    .sidebar.open {
-      transform: translateX(0);
-    }
-    .main-content {
-      margin-left: 0;
-      transition: margin-left 0.3s ease-in-out;
-    }
-    @media (min-width: 768px) {
-      .sidebar {
-        transform: translateX(0);
-        position: fixed;
-      }
-      .main-content {
-        margin-left: 16rem;
-      }
-      .hamburger-menu {
-        display: none;
-      }
-    }
-  </style>
+        /* Mobile specific styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000; /* Ensure sidebar is above content */
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .main-content {
+            margin-left: 0;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+                position: fixed; /* Keep fixed on larger screens */
+            }
+            .main-content {
+                margin-left: 16rem; /* ml-64 */
+            }
+            .hamburger-menu {
+                display: none;
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="flex h-screen">
-    <!-- Hamburger menu for mobile -->
-    <button id="hamburgerMenu" class="hamburger-menu fixed top-4 left-4 z-20 p-2 bg-[#D2691E] rounded-md md:hidden">
-      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"></path>
-      </svg>
-    </button>
+<body class="bg-[#FDFBF6]">
+    <div class="flex h-screen">
+        <!-- Hamburger menu for mobile -->
+        <button id="hamburgerMenu" class="hamburger-menu fixed top-4 left-4 z-20 p-2 bg-[#D2691E] rounded-md md:hidden">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
 
-    <aside id="sidebar" class="w-64 bg-[#FFF8E1] p-6 flex flex-col fixed h-full shadow-lg sidebar">
-      <div class="flex items-center mb-10">
-        <div class="p-2 bg-[#D2691E] rounded-full mr-3">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-            </path>
-          </svg>
-        </div>
-        <h1 class="text-xl font-bold text-[#8B4513]">Stabled</h1>
-      </div>
-      <nav class="flex flex-col space-y-2">
-        <a href="#welcome-dashboard" class="nav-link active p-3 rounded-lg flex items-center">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
-            </path>
-          </svg>
-          Dashboard
-        </a>
-        <a href="#client-welcome" class="nav-link p-3 rounded-lg flex items-center">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-            </path>
-          </svg>
-          Client Welcome
-        </a>
-        <a href="#staff-welcome" class="nav-link p-3 rounded-lg flex items-center">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-            </path>
-          </svg>
-          Staff Welcome
-        </a>
-        <a href="#app-overview" class="nav-link p-3 rounded-lg flex items-center">
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-            </path>
-          </svg>
-          App Overview
-        </a>
-        <button id="logoutBtn"
-          class="w-full mt-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700">Logout</button>
-      </nav>
-      <div class="mt-auto p-4 bg-[#F5DEB3] rounded-lg text-center">
-        <p class="text-sm text-[#8B4513]">Stabled: Your all-in-one barn management solution.</p>
-      </div>
-    </aside>
+        <aside id="sidebar" class="w-64 bg-[#FFF8E1] p-6 flex flex-col fixed h-full shadow-lg sidebar">
+            <div class="flex items-center mb-10">
+                <div class="p-2 bg-[#D2691E] rounded-full mr-3">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                </div>
+                <h1 class="text-xl font-bold text-[#8B4513]">Stabled</h1>
+            </div>
+            <nav class="flex flex-col space-y-2">
+                <a href="#welcome-dashboard" class="nav-link active p-3 rounded-lg flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </a>
+                <a href="#client-welcome" class="nav-link p-3 rounded-lg flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    Client Welcome
+                </a>
+                <a href="#staff-welcome" class="nav-link p-3 rounded-lg flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    Staff Welcome
+                </a>
+                <a href="#app-overview" class="nav-link p-3 rounded-lg flex items-center">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    App Overview
+                </a>
+                <button onclick="window.logoutUser()" class="w-full mt-4 py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700">Logout</button>
+            </nav>
+            <div class="mt-auto p-4 bg-[#F5DEB3] rounded-lg text-center">
+                <p class="text-sm text-[#8B4513]">Stabled: Your all-in-one barn management solution.</p>
+            </div>
+        </aside>
 
-    <main id="mainContent" class="flex-1 p-8 overflow-y-auto main-content md:ml-64">
-      <div class="mb-8">
-        <input type="text" placeholder="Search..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-3" />
-      </div>
+        <main id="mainContent" class="flex-1 p-8 overflow-y-auto main-content md:ml-64">
+            <div class="mb-8">
+                <input type="text" placeholder="Search..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-3">
+            </div>
 
-      <!-- Content Sections -->
-      <div id="welcome-dashboard" class="content-section">
-        <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👑 Welcome, Barn Owner!</h2>
-        <p class="text-gray-700 mb-8">This is your simplified dashboard. You can navigate using the sidebar.</p>
-        <div class="bg-white p-6 rounded-xl shadow-md">
-          <h3 class="text-xl font-semibold text-gray-800 mb
+            <!-- Authentication Section -->
+            <div id="auth-section" class="flex flex-col items-center justify-center h-full w-full" style="display: none;">
+                <div class="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+                    <h2 class="text-2xl font-bold text-[#8B4513] mb-6 text-center">Welcome to Stabled</h2>
+                    
+                    <!-- Login Form -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Login</h3>
+                        <form onsubmit="window.loginUser(event)" class="space-y-4">
+                            <div>
+                                <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="loginEmail" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" required>
+                            </div>
+                            <div>
+                                <label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                                <input type="password" id="loginPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" required>
+                            </div>
+                            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#D2691E] hover:bg-[#A0522D] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D2691E]">Login</button>
+                        </form>
+                    </div>
+
+                    <!-- Signup Form -->
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Sign Up</h3>
+                        <form onsubmit="window.signupUser(event)" class="space-y-4">
+                            <div>
+                                <label for="signupEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="signupEmail" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" required>
+                            </div>
+                            <div>
+                                <label for="signupPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                                <input type="password" id="signupPassword" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2" required>
+                            </div>
+                            <div>
+                                <label for="signupRole" class="block text-sm font-medium text-gray-700">I am a...</label>
+                                <select id="signupRole" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2">
+                                    <option value="barn_owner">Barn Owner</option>
+                                    <option value="client">Client</option>
+                                    <option value="staff">Staff</option>
+                                </select>
+                            </div>
+                            <div id="barnNameField" style="display: none;">
+                                <label for="signupBarnName" class="block text-sm font-medium text-gray-700">Barn Name (for owners)</label>
+                                <input type="text" id="signupBarnName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#D2691E] focus:ring-[#D2691E] sm:text-sm p-2">
+                            </div>
+                            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#2E8B57] hover:bg-[#228B22] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E8B57]">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Application Sections Container -->
+            <div id="app-sections" style="display: none;">
+                <!-- Dashboard for Barn Owner -->
+                <div id="welcome-dashboard" class="content-section">
+                    <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👑 Welcome, Barn Owner!</h2>
+                    <p class="text-gray-700 mb-8">This is your simplified dashboard. You can navigate using the sidebar.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Barn Overview</h3>
+                        <p class="text-gray-600">This is where you would see key metrics and quick actions for your barn.</p>
+                        <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                            <li>Total Horses: 25</li>
+                            <li>Active Clients: 18</li>
+                            <li>Upcoming Bookings: 12</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Welcome for Client -->
+                <div id="client-welcome" class="content-section">
+                    <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👋 Welcome, Client!</h2>
+                    <p class="text-gray-700 mb-8">This is your personalized client portal. You can navigate using the sidebar.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Horse Info</h3>
+                        <p class="text-gray-600">View details about your horses and their care.</p>
+                        <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                            <li>Horse: Starlight (Arabian)</li>
+                            <li>Next Lesson: July 15, 2025</li>
+                            <li>Outstanding Invoice: $850</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Welcome for Staff -->
+                <div id="staff-welcome" class="content-section">
+                    <h2 class="text-3xl font-bold text-[#8B4513] mb-4">👷 Welcome, Staff Member!</h2>
+                    <p class="text-gray-700 mb-8">This is your staff portal. You can navigate using the sidebar.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-3">Your Daily Tasks</h3>
+                        <p class="text-gray-600">See your assigned tasks and updates.</p>
+                        <ul class="list-disc list-inside text-gray-700 mt-4 space-y-2">
+                            <li>AM Feed: Pending</li>
+                            <li>Stall Cleaning (Starlight): Completed</li>
+                            <li>Medication (Thunder): Pending</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- App Overview (visible to all, even not logged in) -->
+                <div id="app-overview" class="content-section">
+                    <h2 class="text-3xl font-bold text-[#8B4513] mb-4">Stabled: Application Overview</h2>
+                    <p class="text-gray-500 mb-8">Discover how Stabled streamlines your barn management.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#D2691E]">
+                            <h3 class="text-lg font-semibold text-gray-700">Centralized Data</h3>
+                            <p class="text-gray-500 text-sm mt-1">Manage all horse, client, and operational data in one place.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#2E8B57]">
+                            <h3 class="text-lg font-semibold text-gray-700">Boost Efficiency</h3>
+                            <p class="text-gray-500 text-sm mt-1">Streamline daily tasks and reduce administrative burden.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#4682B4]">
+                            <h3 class="text-lg font-semibold text-gray-700">Secure Access</h3>
+                            <p class="text-gray-500 text-sm mt-1">Tailored views and permissions for barn owners, staff, and clients.</p>
+                        </div>
+                         <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#DAA520]">
+                            <h3 class="text-lg font-semibold text-gray-700">Access Anywhere</h3>
+                            <p class="text-gray-500 text-sm mt-1">Fully responsive design for seamless use on any device.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs and Application Logic (moved to end of body) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Global state for authenticated user and barn ID
+        window.currentUser = null;
+        window.currentUserId = null;
+        window.currentUserRole = null;
+        window.currentUserBarnId = null;
+
+        // Function to update UI based on authentication state
+        function updateUIForAuthState(user) {
+            const authSection = document.getElementById('auth-section');
+            const appSections = document.getElementById('app-sections');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const loginEmailInput = document.getElementById('loginEmail');
+            const loginPasswordInput = document.getElementById('loginPassword');
+            const signupEmailInput = document.getElementById('signupEmail');
+            const signupPasswordInput = document.getElementById('signupPassword');
+            const signupRoleSelect = document.getElementById('signupRole');
+
+            if (user) {
+                window.currentUser = user;
+                window.currentUserId = user.uid;
+                if (authSection) authSection.style.display = 'none';
+                if (appSections) appSections.style.display = 'flex'; // Show main app content
+
+                // Fetch user profile from Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                onSnapshot(userDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+                        window.currentUserRole = userData.role;
+                        window.currentUserBarnId = userData.barnId;
+                        console.log('User profile loaded:', userData);
+                        updateAppContentVisibility();
+                        updateSidebarLinks();
+                    } else {
+                        console.warn("No user profile found for existing user. This might indicate an issue or a new anonymous user.");
+                        updateAppContentVisibility();
+                        updateSidebarLinks();
+                    }
+                }, (error) => {
+                    console.error("Error fetching user profile:", error);
+                    // No message box in bare-bones, rely on console
+                });
+
+                // Clear login/signup forms
+                if (loginEmailInput) loginEmailInput.value = '';
+                if (loginPasswordInput) loginPasswordInput.value = '';
+                if (signupEmailInput) signupEmailInput.value = '';
+                if (signupPasswordInput) signupPasswordInput.value = '';
+                if (signupRoleSelect) signupRoleSelect.value = 'client'; // Reset to default
+                
+            } else {
+                window.currentUser = null;
+                window.currentUserId = null;
+                window.currentUserRole = null;
+                window.currentUserBarnId = null;
+                if (authSection) authSection.style.display = 'flex';
+                if (appSections) appSections.style.display = 'none';
+                if (sidebar) sidebar.classList.remove('open'); // Ensure sidebar is closed on logout
+                if (mainContent) mainContent.classList.remove('ml-64');
+                updateAppContentVisibility(); // Update visibility for non-logged in state
+                updateSidebarLinks(); // Update sidebar for non-logged in state
+            }
+        }
+
+        // Handle initial authentication state
+        onAuthStateChanged(auth, async (user) => {
+            if (!user && initialAuthToken) {
+                try {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                    console.log("Signed in with custom token.");
+                } catch (error) {
+                    console.error("Error signing in with custom token:", error);
+                    try {
+                        await signInAnonymously(auth);
+                        console.log("Signed in anonymously as fallback.");
+                    } catch (anonError) {
+                        console.error("Error signing in anonymously:", anonError);
+                    }
+                }
+            } else if (!user && !initialAuthToken) {
+                 try {
+                    await signInAnonymously(auth);
+                    console.log("Signed in anonymously.");
+                } catch (anonError) {
+                    console.error("Error signing in anonymously:", anonError);
+                }
+            } else {
+                updateUIForAuthState(user);
+            }
+        });
+
+        // Login function
+        window.loginUser = async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log("Logged in successfully!");
+            } catch (error) {
+                console.error("Login error:", error);
+            }
+        };
+
+        // Signup function
+        window.signupUser = async function(event) {
+            event.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const role = document.getElementById('signupRole').value;
+            const signupBarnNameInput = document.getElementById('signupBarnName');
+            const barnName = signupBarnNameInput ? signupBarnNameInput.value : '';
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                let barnIdToUse = null;
+
+                if (role === 'barn_owner') {
+                    barnIdToUse = `${user.uid}_${Date.now()}`; // Simple unique ID for demo
+                    await setDoc(doc(db, 'barns', barnIdToUse), {
+                        name: barnName || `${user.email.split('@')[0]}'s Barn`,
+                        ownerUid: user.uid,
+                        createdAt: new Date()
+                    });
+                    console.log(`Welcome, Barn Owner! Your barn '${barnName}' is set up.`);
+                } else {
+                    barnIdToUse = 'demo_barn_id'; // Generic ID for demo clients/staff
+                    console.log(`Welcome, ${role}!`);
+                }
+
+                // Create user profile in Firestore
+                await setDoc(doc(db, 'users', user.uid), {
+                    email: user.email,
+                    role: role,
+                    barnId: barnIdToUse,
+                    createdAt: new Date()
+                });
+
+                console.log("Account created successfully!");
+            } catch (error) {
+                console.error("Signup error:", error);
+            }
+        };
+
+        // Logout function
+        window.logoutUser = async function() {
+            try {
+                await signOut(auth);
+                console.log("Logged out successfully.");
+                window.updateUIForAuthState(null); // Manually update UI after logout
+                history.pushState(null, null, '#auth'); // Go back to auth screen
+            } catch (error) {
+                console.error("Logout error:", error);
+            }
+        };
+
+        // Function to update content visibility based on role
+        function updateAppContentVisibility() {
+            const allContentSections = document.querySelectorAll('.content-section');
+            allContentSections.forEach(section => {
+                section.style.display = 'none'; // Hide all by default
+                section.classList.remove('active'); // Ensure only one active section
+            });
+
+            const currentHash = window.location.hash || '#app-overview'; // Default to app-overview or auth
+
+            let sectionToActivate = null;
+
+            if (window.currentUser) {
+                // User is logged in
+                document.getElementById('app-sections').style.display = 'flex';
+                document.getElementById('auth-section').style.display = 'none';
+
+                if (window.currentUserRole === 'barn_owner') {
+                    document.getElementById('welcome-dashboard').style.display = 'block';
+                    sectionToActivate = document.querySelector(currentHash) || document.getElementById('welcome-dashboard');
+                } else if (window.currentUserRole === 'client') {
+                    document.getElementById('client-welcome').style.display = 'block';
+                    sectionToActivate = document.querySelector(currentHash) || document.getElementById('client-welcome');
+                } else if (window.currentUserRole === 'staff') {
+                    document.getElementById('staff-welcome').style.display = 'block';
+                    sectionToActivate = document.querySelector(currentHash) || document.getElementById('staff-welcome');
+                }
+                document.getElementById('app-overview').style.display = 'block'; // Always show app overview when logged in
+            } else {
+                // Not logged in
+                document.getElementById('auth-section').style.display = 'flex';
+                document.getElementById('app-sections').style.display = 'none';
+                document.getElementById('app-overview').style.display = 'block'; // Show app overview when not logged in
+                sectionToActivate = document.querySelector(currentHash) || document.getElementById('app-overview');
+            }
+
+            if (sectionToActivate) {
+                sectionToActivate.classList.add('active');
+            }
+        }
+
+        // Update sidebar links based on role
+        function updateSidebarLinks() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                let display = 'none'; // Default to hidden
+
+                if (window.currentUser) {
+                    if (window.currentUserRole === 'barn_owner') {
+                        if (['#welcome-dashboard', '#app-overview'].includes(href)) {
+                            display = 'flex';
+                        }
+                    } else if (window.currentUserRole === 'client') {
+                        if (['#client-welcome', '#app-overview'].includes(href)) {
+                            display = 'flex';
+                        }
+                    } else if (window.currentUserRole === 'staff') {
+                        if (['#staff-welcome', '#app-overview'].includes(href)) {
+                            display = 'flex';
+                        }
+                    }
+                } else {
+                    // Not logged in, only show App Overview
+                    if (['#app-overview'].includes(href)) {
+                        display = 'flex';
+                    }
+                }
+                link.style.display = display;
+            });
+            // Ensure logout button is only visible when logged in
+            const logoutButton = document.querySelector('button[onclick="window.logoutUser()"]');
+            if (logoutButton) {
+                logoutButton.style.display = window.currentUser ? 'block' : 'none';
+            }
+        }
+
+        // Event listeners for navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const sidebar = document.getElementById('sidebar');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const mainContent = document.getElementById('mainContent');
+
+        function closeSidebar() {
+            if (sidebar) sidebar.classList.remove('open');
+            if (window.innerWidth < 768 && mainContent) { 
+                mainContent.classList.remove('ml-64');
+            }
+        }
+
+        window.updateContent = function(hash) {
+            const targetHash = hash || '#app-overview'; // Default for non-logged in state
+            
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === targetHash);
+            });
+
+            contentSections.forEach(section => {
+                section.classList.toggle('active', `#${section.id}` === targetHash);
+            });
+
+            if (window.innerWidth < 768) {
+                closeSidebar();
+            }
+        };
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetHash = this.getAttribute('href');
+                history.pushState(null, null, targetHash);
+                window.updateContent(targetHash);
+            });
+        });
+
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', function() {
+                if (sidebar) sidebar.classList.toggle('open');
+                if (mainContent) mainContent.classList.toggle('ml-64');
+            });
+        }
+
+        window.addEventListener('popstate', () => {
+            window.updateContent(window.location.hash);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial sidebar state for larger screens
+            if (window.innerWidth >= 768) {
+                if (sidebar) sidebar.classList.add('open');
+                if (mainContent) mainContent.classList.add('ml-64');
+            } else {
+                if (sidebar) sidebar.classList.remove('open');
+                if (mainContent) mainContent.classList.remove('ml-64');
+            }
+            
+            // Initial content update based on hash or default
+            window.updateContent(window.location.hash);
+            window.updateSidebarLinks(); // Initial sidebar link visibility
+
+            // Event listener for signup role change to show/hide barn name field
+            const signupRoleSelect = document.getElementById('signupRole');
+            const barnNameField = document.getElementById('barnNameField');
+            if (signupRoleSelect && barnNameField) {
+                signupRoleSelect.addEventListener('change', function() {
+                    if (this.value === 'barn_owner') {
+                        barnNameField.style.display = 'block';
+                        document.getElementById('signupBarnName').setAttribute('required', 'required');
+                    } else {
+                        barnNameField.style.display = 'none';
+                        document.getElementById('signupBarnName').removeAttribute('required');
+                    }
+                });
+                // Initial check in case page loads with barn_owner selected (e.g., from browser back)
+                if (signupRoleSelect.value === 'barn_owner') {
+                    barnNameField.style.display = 'block';
+                    document.getElementById('signupBarnName').setAttribute('required', 'required');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
